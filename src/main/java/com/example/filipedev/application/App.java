@@ -1,6 +1,6 @@
 package com.example.filipedev.application;
 
-import com.example.filipedev.application.model.FilteredResponse;
+import com.example.filipedev.model.FilteredResponse;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -17,7 +17,7 @@ public class App {
 		String inputLine;
 
 		try {
-			URL url = new URL("http://viacep.com.br/ws/72010040/json/");
+			URL url = new URL("http://viacep.com.br/ws/72318324/json/");
 
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
@@ -32,7 +32,7 @@ public class App {
 
 			JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
 
-			JsonObject filteredResponse = FilteredResponse.formatCPF(jsonResponse);
+			JsonObject filteredResponse = FilteredResponse.formatResponse(jsonResponse);
 
 			System.out.println(filteredResponse.toString());
 
