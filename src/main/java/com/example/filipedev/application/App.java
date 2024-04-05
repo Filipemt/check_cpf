@@ -1,44 +1,32 @@
 package com.example.filipedev.application;
 
+import com.example.filipedev.model.ApiConector;
 import com.example.filipedev.model.FilteredResponse;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-
-import java.net.URL;
+import java.util.Scanner;
 
 public class App {
 
 	public static void main(String[] args) {
 
-		String inputLine;
+		Scanner sc = new Scanner(System.in);
+
+		System.out.print("Digite o CEP que você quer consultar: ");
+		int cep = sc.nextInt();
 
 		try {
-			URL url = new URL("http://viacep.com.br/ws/72318324/json/");
+			ApiConector apiConector = new ApiConector();
+			JsonObject jsonResponse = apiConector.sendGetRequest(cep);
 
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
-
-			JsonObject filteredResponse = FilteredResponse.formatResponse(jsonResponse);
+			FilteredResponse formatter = new FilteredResponse();
+			JsonObject filteredResponse = formatter.formatResponse(jsonResponse);
 
 			System.out.println(filteredResponse.toString());
 
-			connection.disconnect();
 		} catch (Exception e) {
           e.printStackTrace();
       }
+		sc.close();
    }
 }
