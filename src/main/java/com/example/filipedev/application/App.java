@@ -7,26 +7,25 @@ import com.google.gson.JsonObject;
 import java.util.Scanner;
 
 public class App {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-	public static void main(String[] args) {
+        JsonObject filteredResponse;
 
-		Scanner sc = new Scanner(System.in);
+        try {
+            System.out.print("Digite o CEP que você quer consultar: ");
+            String cep = sc.next().replace("-", "").replace(".", "").replace(",", "");
 
-		System.out.print("Digite o CEP que você quer consultar: ");
-		int cep = sc.nextInt();
+            ApiConector apiConector = new ApiConector();
+            JsonObject jsonResponse = apiConector.sendGetRequest(Integer.valueOf(cep));
 
-		try {
-			ApiConector apiConector = new ApiConector();
-			JsonObject jsonResponse = apiConector.sendGetRequest(cep);
+            FilteredResponse formatter = new FilteredResponse();
+            filteredResponse = formatter.formatResponse(jsonResponse);
+            System.out.println(filteredResponse.toString());
+        } catch (Exception error) {
+            System.out.println("CEP Inválido!");
+        }
 
-			FilteredResponse formatter = new FilteredResponse();
-			JsonObject filteredResponse = formatter.formatResponse(jsonResponse);
-
-			System.out.println(filteredResponse.toString());
-
-		} catch (Exception e) {
-          e.printStackTrace();
-      }
-		sc.close();
-   }
+        sc.close();
+    }
 }

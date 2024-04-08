@@ -4,14 +4,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ApiConector {
 
-    private Integer cep;
+    private String cep;
     public JsonObject sendGetRequest(Integer cep) throws Exception {
         String inputLine;
 
